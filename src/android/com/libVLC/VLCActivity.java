@@ -149,17 +149,19 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
         // auto play the video after launching
         _autoPlay = intent.getBooleanExtra("autoPlay", false);
 
-        _handlerSeekBar();
-        _handlerMediaControl();
+        //_handlerSeekBar();
+        //_handlerMediaControl();
 
         // play
         _initPlayer();
+      Log.d(TAG,"onCreate");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
+        this.finish();
+      Log.d(TAG,"onPause");
         if (vlcVideoLibrary.isPlaying()) {
             vlcVideoLibrary.pause();
         }
@@ -168,19 +170,28 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
     @Override
     public void onResume() {
         super.onResume();
-
+      Log.d(TAG,"onResume");
         if (vlcVideoLibrary.isPlaying()) {
             vlcVideoLibrary.getPlayer().play();
         }
     }
 
     @Override
+    public void onStop(){
+      super.onStop();
+      activity.unregisterReceiver(br);
+      vlcVideoLibrary.play("");
+      vlcVideoLibrary.stop();
+      _sendBroadCast("onDestroyVlc");
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        activity.unregisterReceiver(br);
-
+     /*   activity.unregisterReceiver(br);
+        vlcVideoLibrary.play("");
         vlcVideoLibrary.stop();
-        _sendBroadCast("onDestroyVlc");
+        _sendBroadCast("onDestroyVlc");*/
     }
 
     @Override
@@ -249,7 +260,7 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
                                     new Runnable() {
                                         @Override
                                         public void run() {
-                                            mediaPlayerControls.setVisibility(View.GONE); 
+                                            mediaPlayerControls.setVisibility(View.GONE);
                                         }
                                     }
                                 );
