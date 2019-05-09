@@ -22,7 +22,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.webmons.disono.vlc.VlcListener;
-import com.webmons.disono.vlc.VlcVideoLibrary;
 
 import org.json.JSONException;
 import org.json.JSONObject;
