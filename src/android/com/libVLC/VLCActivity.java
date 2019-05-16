@@ -219,7 +219,7 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
     @Override
     public void onPauseVlc() {
         _sendBroadCast("onPauseVlc");
-
+        this.finish();
         Drawable drawableIcon = getResources().getDrawable(_getResource("ic_play_arrow_white_24dp", "drawable"));
         bStartStop.setImageDrawable(drawableIcon);
     }
