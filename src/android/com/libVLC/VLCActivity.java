@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -19,8 +20,10 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.webmons.disono.vlc.VlcListener;
 
@@ -64,6 +67,8 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
     private Handler handlerOverlay;
     private Runnable runnableOverlay;
     private int playingPos;
+
+    private RelativeLayout vlcTile;
 
     private String _url;
 
@@ -165,7 +170,7 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
     @Override
     public void onPause() {
         super.onPause();
-        //this.finish();
+        this.finish();
         Log.d(TAG,"onPause");
         if (vlcVideoLibrary.isPlaying()) {
             vlcVideoLibrary.pause();
@@ -175,6 +180,7 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
     @Override
     public void onResume() {
         super.onResume();
+        //this.finish();
         Log.d(TAG,"onResume");
         if (vlcVideoLibrary.isPlaying()) {
             vlcVideoLibrary.getPlayer().play();
@@ -219,7 +225,7 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
     @Override
     public void onPauseVlc() {
         _sendBroadCast("onPauseVlc");
-        this.finish();
+
         Drawable drawableIcon = getResources().getDrawable(_getResource("ic_play_arrow_white_24dp", "drawable"));
         bStartStop.setImageDrawable(drawableIcon);
     }
@@ -319,6 +325,7 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
         mediaPlayerFull.setOnClickListener(v->getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN));
         bStartStop.setOnClickListener(this);
         vlcVideoLibrary = new VlcVideoLibrary(this, this, surfaceView);
+        vlcTile = (RelativeLayout)findViewById(_getResource("vlcTitle", "id"));
 
         progressBar = (RingProgressBar)findViewById(_getResource("progress_bar_2", "id"));
     }
@@ -445,5 +452,24 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
         intent.putExtra("method", methodName);
         intent.putExtra("data", object.toString());
         activity.sendBroadcast(intent);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
+        Log.d(TAG,"onConfigurationChanged");
+        int sw = getWindow().getDecorView().getWidth();
+        int sh = getWindow().getDecorView().getHeight();
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            //Toast.makeText(getApplicationContext(), "横屏", Toast.LENGTH_SHORT).show();
+            vlcVideoLibrary.getPlayer().getVLCVout().setWindowSize(sh,sw);
+            vlcTile.setVisibility(View.GONE);
+        }else{
+            //Toast.makeText(getApplicationContext(), "竖屏", Toast.LENGTH_SHORT).show();
+            vlcVideoLibrary.getPlayer().getVLCVout().setWindowSize(sh,sw);
+            vlcTile.setVisibility(View.VISIBLE);
+        }
+
+
     }
 }

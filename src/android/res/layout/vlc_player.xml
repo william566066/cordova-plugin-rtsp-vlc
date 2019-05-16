@@ -22,35 +22,6 @@
             android:scrollbars="vertical"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="@android:color/background_dark"
-                android:layout_gravity="center|center_horizontal">
-                <ImageButton
-                    android:id="@+id/mediaPlayerFull"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="full"
-                    android:visibility="gone"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:textColor="@android:color/background_light"
-                    android:text="@string/videoTitle"/>
-                <ImageButton
-                    android:id="@+id/mediaPlayerClose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:background="#00000000"
-                    android:src="@drawable/ic_close_white_24dp" />
-            </RelativeLayout>
-
             <SurfaceView
                 android:id="@+id/vlc_surfaceView"
                 android:layout_width="fill_parent"
@@ -63,6 +34,38 @@
                 android:layout_weight="1"
                 android:text="Button" />
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/vlcTitle"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@android:color/background_dark"
+            android:layout_gravity="center|center_horizontal">
+            <ImageButton
+                android:id="@+id/mediaPlayerFull"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="full"
+                android:visibility="gone"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textColor="@android:color/background_light"
+                android:text="@string/videoTitle"/>
+
+            <ImageButton
+                android:id="@+id/mediaPlayerClose"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:background="#00000000"
+                android:src="@drawable/ic_close_white_24dp" />
+        </RelativeLayout>
 
         <io.netopen.hotbitmapgg.library.view.RingProgressBar
             android:id="@+id/progress_bar_2"

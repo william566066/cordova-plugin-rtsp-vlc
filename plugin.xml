@@ -32,7 +32,7 @@
 			</config-file>
 
 			<config-file target="AndroidManifest.xml" parent="/manifest/application">
-				<activity android:name="com.libVLC.VLCActivity"/>
+				<activity android:name="com.libVLC.VLCActivity" android:configChanges="orientation|keyboardHidden|screenSize"/>
 			</config-file>
 			
 			<source-file src="src/android/com/libVLC/VideoPlayerVLC.java" target-dir="src/com/libVLC"/>
