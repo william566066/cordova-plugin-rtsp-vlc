@@ -85,25 +85,28 @@ public class VlcVideoLibrary implements EventListener {
     }
 
     public void onEvent(Event event) {
-        switch(event.type) {
-        case 260:
-            this.vlcListener.onPlayVlc();
-            break;
-        case 261:
-            this.vlcListener.onPauseVlc();
-            break;
-        case 262:
-            this.vlcListener.onStopVlc();
-        case 263:
-        case 264:
-        default:
-            break;
-        case 265:
-            this.player.stop();
-            this.vlcListener.onVideoEnd();
-            break;
-        case 266:
-            this.vlcListener.onError();
+        switch (event.type) {
+            case Event.Buffering:
+                ((VLCActivity) this.vlcListener).processBar(event.getBuffering());
+                break;
+            case 260:
+                this.vlcListener.onPlayVlc();
+                break;
+            case 261:
+                this.vlcListener.onPauseVlc();
+                break;
+            case 262:
+                this.vlcListener.onStopVlc();
+            case 263:
+            case 264:
+            default:
+                break;
+            case 265:
+                this.player.stop();
+                this.vlcListener.onVideoEnd();
+                break;
+            case 266:
+                this.vlcListener.onError();
         }
 
     }

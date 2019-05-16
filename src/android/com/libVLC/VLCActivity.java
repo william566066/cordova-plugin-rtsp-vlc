@@ -18,6 +18,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -29,6 +30,8 @@ import org.json.JSONObject;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import io.netopen.hotbitmapgg.library.view.RingProgressBar;
 
 /**
  * Author: Archie, Disono (webmonsph@gmail.com)
@@ -55,6 +58,9 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
     private TextView videoCurrentLoc;
     private TextView videoDuration;
 
+    private ImageButton mediaPlayerClose;
+    private ImageButton mediaPlayerFull;
+    private RingProgressBar progressBar;
     private Handler handlerOverlay;
     private Runnable runnableOverlay;
     private int playingPos;
@@ -127,9 +133,9 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
         super.onCreate(savedInstanceState);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         activity = this;
         ActionBar actionBar = activity.getActionBar();
@@ -153,14 +159,14 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
 
         // play
         _initPlayer();
-      Log.d(TAG,"onCreate");
+        Log.d(TAG,"onCreate");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        this.finish();
-      Log.d(TAG,"onPause");
+        //this.finish();
+        Log.d(TAG,"onPause");
         if (vlcVideoLibrary.isPlaying()) {
             vlcVideoLibrary.pause();
         }
@@ -169,7 +175,7 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
     @Override
     public void onResume() {
         super.onResume();
-      Log.d(TAG,"onResume");
+        Log.d(TAG,"onResume");
         if (vlcVideoLibrary.isPlaying()) {
             vlcVideoLibrary.getPlayer().play();
         }
@@ -177,11 +183,11 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
 
     @Override
     public void onStop(){
-      super.onStop();
-      activity.unregisterReceiver(br);
-      vlcVideoLibrary.play("");
-      vlcVideoLibrary.stop();
-      _sendBroadCast("onDestroyVlc");
+        super.onStop();
+        activity.unregisterReceiver(br);
+        vlcVideoLibrary.play("");
+        vlcVideoLibrary.stop();
+        _sendBroadCast("onDestroyVlc");
     }
 
     @Override
@@ -234,6 +240,13 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
         bStartStop.setImageDrawable(drawableIcon);
     }
 
+    public void processBar(float p){
+        progressBar.setProgress(Float.valueOf(p).intValue());
+        if(p==100f){
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void onError() {
         _sendBroadCast("onError");
@@ -248,37 +261,37 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
 
     private void _initPlayer() {
         new Timer().schedule(
-            new TimerTask() {
-                @Override
-                public void run() {
-                    if (_hideControls) {
-                        Thread thread = new Thread() {
-                            @Override
-                            public void run() {
-                                runOnUiThread(
-                                    new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            mediaPlayerControls.setVisibility(View.GONE);
-                                        }
-                                    }
-                                );
-                            }
-                        };
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (_hideControls) {
+                            Thread thread = new Thread() {
+                                @Override
+                                public void run() {
+                                    runOnUiThread(
+                                            new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    mediaPlayerControls.setVisibility(View.GONE);
+                                                }
+                                            }
+                                    );
+                                }
+                            };
 
-                        thread.start();
-                    }
-
-                    if (_autoPlay && vlcVideoLibrary != null && _url != null) {
-                        if (vlcVideoLibrary.isPlaying()) {
-                            vlcVideoLibrary.stop();
+                            thread.start();
                         }
 
-                        vlcVideoLibrary.play(_url);
+                        if (_autoPlay && vlcVideoLibrary != null && _url != null) {
+                            if (vlcVideoLibrary.isPlaying()) {
+                                vlcVideoLibrary.stop();
+                            }
+
+                            vlcVideoLibrary.play(_url);
+                        }
                     }
-                }
-            },
-            300
+                },
+                300
         );
     }
 
@@ -300,8 +313,14 @@ public class VLCActivity extends Activity implements VlcListener, View.OnClickLi
         mediaPlayerControls = (LinearLayout) findViewById(_getResource("mediaPlayerControls", "id"));
         mediaPlayerControls.bringToFront();
 
+        mediaPlayerClose = (ImageButton) findViewById(_getResource("mediaPlayerClose", "id"));
+        mediaPlayerFull = (ImageButton) findViewById(_getResource("mediaPlayerFull", "id"));
+        mediaPlayerClose.setOnClickListener(v->finish());
+        mediaPlayerFull.setOnClickListener(v->getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN));
         bStartStop.setOnClickListener(this);
         vlcVideoLibrary = new VlcVideoLibrary(this, this, surfaceView);
+
+        progressBar = (RingProgressBar)findViewById(_getResource("progress_bar_2", "id"));
     }
 
     private void _handlerSeekBar() {

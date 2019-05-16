@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center|center_vertical"
     android:orientation="vertical">
 
@@ -20,10 +22,39 @@
             android:scrollbars="vertical"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center|center_horizontal">
+                <ImageButton
+                    android:id="@+id/mediaPlayerFull"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="full"
+                    android:visibility="gone"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@android:color/background_light"
+                    android:text="@string/videoTitle"/>
+                <ImageButton
+                    android:id="@+id/mediaPlayerClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:background="#00000000"
+                    android:src="@drawable/ic_close_white_24dp" />
+            </RelativeLayout>
+
             <SurfaceView
                 android:id="@+id/vlc_surfaceView"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent" />
+                android:layout_height="fill_parent" >
+            </SurfaceView>
 
             <Button
                 android:layout_width="wrap_content"
@@ -31,6 +62,19 @@
                 android:layout_weight="1"
                 android:text="Button" />
         </LinearLayout>
+
+        <io.netopen.hotbitmapgg.library.view.RingProgressBar
+            android:id="@+id/progress_bar_2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            app:max="100"
+            app:ringColor="@android:color/holo_blue_light"
+            app:ringWidth="5dp"
+            app:style="STROKE"
+            app:textColor="@android:color/holo_blue_light"
+            app:textIsShow="true"
+            app:textSize="16sp" />
 
         <LinearLayout
             android:id="@+id/mediaPlayerControls"
@@ -40,7 +84,8 @@
             android:orientation="vertical"
             android:layout_gravity="center|bottom"
             android:layout_alignParentBottom="true"
-            android:padding="3dp">
+            android:padding="3dp"
+            android:visibility="gone">
 
             <ImageButton
                 android:id="@+id/vlc_start_stop"

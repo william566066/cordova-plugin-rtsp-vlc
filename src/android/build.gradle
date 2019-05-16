@@ -5,4 +5,5 @@ repositories {
 dependencies {
     compile 'com.github.disono.libVLC-Player:libvlc:1.0'
     compile 'com.github.disono.libVLC-Player:disonoVLC:1.0'
+    compile 'com.github.HotBitmapGG:RingProgressBar:V1.2.3'
 }
