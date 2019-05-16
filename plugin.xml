@@ -37,11 +37,13 @@
 			
 			<source-file src="src/android/com/libVLC/VideoPlayerVLC.java" target-dir="src/com/libVLC"/>
 			<source-file src="src/android/com/libVLC/VLCActivity.java" target-dir="src/com/libVLC"/>
+			<source-file src="src/android/com/libVLC/VlcOptions.java" target-dir="src/com/libVLC"/>
+			<source-file src="src/android/com/libVLC/VlcVideoLibrary.java" target-dir="src/com/libVLC"/>
 			
 			<resource-file src="src/android/res/layout/vlc_player.xml" target="res/layout/vlc_player.xml" />
 			
 			<resource-file src="src/android/res/drawable/ic_close_white_24dp.xml" target="res/drawable/ic_close_white_24dp.xml" />
-			<resource-file src="src/android/res/values/strings.xml" target="res/drawable/video_strings.xml" />
+			<resource-file src="src/android/res/values/strings.xml" target="res/values/video_strings.xml" />
 			
 			<resource-file src="src/android/res/drawable-hdpi/ic_pause_white_24dp.png" target="res/drawable-hdpi/ic_pause_white_24dp.png" />
 			<resource-file src="src/android/res/drawable-hdpi/ic_play_arrow_white_24dp.png" target="res/drawable-hdpi/ic_play_arrow_white_24dp.png" />
